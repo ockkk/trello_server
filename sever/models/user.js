@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  return sequelize.define('users', {
+  const users = sequelize.define('users', {
     u_key: {
       type: DataTypes.INTERGER,
       allowNull: false,
@@ -19,4 +19,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     }
   })   
+  users.associate = function(models){
+     users.hasMany(models.todo_list);
+  }
+
+  return users;
 }
