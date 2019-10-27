@@ -1,3 +1,5 @@
+'use strict'
+
 module.exports = (sequelize, DataTypes) => {
   const users = sequelize.define('users', {
     u_key: {
@@ -20,7 +22,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   })   
   users.associate = function(models){
-     users.hasMany(models.todo_list);
+     models.users.hasMany(models.todo_list, {
+      foreignKey: "u_key",
+      onDelete: "cascade"
+     });
   }
 
   return users;
