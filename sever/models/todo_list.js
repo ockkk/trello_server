@@ -8,11 +8,15 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true,
     },
-    t_title: {
+    t_board: {
       type: DataTypes.STRING(30),
       allowNull: false,
     },
-    t_text: {
+    t_category: {
+      type: DataTypes.STRING(30),
+      allowNull: false,
+    },
+    t_card: {
       type: DataTypes.STRING(30),
       allowNull: false,
     },
