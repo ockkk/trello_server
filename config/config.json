@@ -1,12 +1,11 @@
 {
   "development": {
     "username": "root",
-    "password": "",
-    "database": "trello",
+    "password": null,
+    "database": "database_development",
     "host": "127.0.0.1",
-    "port": "6900",
     "dialect": "mysql",
-    "logging": false
+    "operatorsAliases": false
   },
   "test": {
     "username": "root",

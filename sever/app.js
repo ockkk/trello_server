@@ -7,11 +7,11 @@ const app = express();
 const models = require("./models/index.js");
 
 models.sequelize.sync().then( () => {
-  console.log(" DB 연결 성공");
+  console.log("DB connect success!!😃");
 }).catch(err => {
-  console.log("연결 실패");
+  console.log("Db connect fail!!😡");
   console.log(err);
-})
+}) 
 
 app.use(cors());
 app.use(bodyparser.json());

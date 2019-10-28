@@ -3,7 +3,7 @@
 module.exports = (sequelize, DataTypes) => {
   const todo_list = sequelize.define('todo_list', {
     t_key: {
-      type: DataTypes.INTERGER,
+      type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
