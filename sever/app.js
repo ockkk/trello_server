@@ -4,6 +4,14 @@ var cors = require("cors")
 
 
 const app = express();
+const models = require("../models/index");
+
+models.sequelize.sync().then( () => {
+  console.log("DB connect success!!😃");
+}).catch(err => {
+  console.log("Db connect fail!!😡");
+  console.log(err);
+}) 
 
 app.use(cors());
 app.use(bodyparser.json());
