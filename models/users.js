@@ -1,25 +1,31 @@
 'use strict'
 
 module.exports = (sequelize, DataTypes) => {
-  const todo_list = sequelize.define('todo_list', {
-    t_key: {
+  const users = sequelize.define('users', {
+    u_key: {
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
-    t_board: {
+    u_name: {
+      type: DataTypes.STRING(20),
+      allowNull: false,
+    },
+    u_email: {
       type: DataTypes.STRING(30),
       allowNull: false,
     },
-    t_category: {
-      type: DataTypes.STRING(30),
-      allowNull: false,
-    },
-    t_card: {
+    u_password: {
       type: DataTypes.STRING(30),
       allowNull: false,
     },
   })   
-  return todo_list;
+  users.associate = function(models){
+     models.users.hasMany(models.boards, {
+      foreignKey: "u_key",
+      onDelete: "cascade"
+     });
+  }
+  return users;
 }
