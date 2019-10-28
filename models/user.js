@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     u_password: {
       type: DataTypes.STRING(30),
       allowNull: false,
-    }
+    },
   })   
   users.associate = function(models){
      models.users.hasMany(models.todo_list, {
