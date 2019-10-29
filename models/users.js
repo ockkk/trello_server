@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(30),
       allowNull: false,
     },
+    slat: {
+      type: DataTypes.STRING,
+      allowNull: false
+    }
   })   
   users.associate = function(models){
      models.users.hasMany(models.boards, {
