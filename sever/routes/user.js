@@ -88,39 +88,13 @@ router.post("/update", (req, res) => {
       })
     })
   }
-
-  if(req.body.name){
-    users.update({
-      u_name: req.body.name
-    },
-    {
-      where: {
-        id: req.cookies.email
-      }
-    }
-    ).catch((err) => res.send(err))
-  }
-
-  if(req.body,email){
-    users.update({
-      u_email: req.body.email
-    },
-    {
-      where: {
-        id: req.token.email
-      }
-    }
-    ).catch((err) => res.send(err))
-  }
-  res.send("변경되었습니다.!!")
 })
 
 router.post('/delete', (req, res) => {
-  console.log(req.body)
   if(req.token){
     users.destroy({
       where:{
-        u_email: req.body.email
+        u_email: req.token.email
       }
     })
     .then(()=>{
