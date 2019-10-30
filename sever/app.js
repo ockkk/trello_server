@@ -2,6 +2,7 @@ var express = require("express");
 var bodyparser = require("body-parser");
 var cors = require("cors")
 
+var checkToken = require("../middleware/checkToken")
 var users = require("./routes/user")
 
 const app = express();
@@ -17,6 +18,7 @@ models.sequelize.sync().then( () => {
 app.use(cors());
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({extended: true}));
+app.use(checkToken)
 
 app.use("/users", users)
 app.listen(8080, () => {
