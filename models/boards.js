@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     },
   })
   
-  users.associate = function(models){
+  boards.associate = function(models){
     models.boards.hasMany(models.containers, {
      foreignKey: "b_key",
      onDelete: "cascade"
