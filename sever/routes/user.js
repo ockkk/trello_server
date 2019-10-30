@@ -19,7 +19,7 @@ router.post("/signup", async (req, res) => {
           u_name: req.body.name,
           u_email: req.body.e_mail,
           u_password: key.toString("base64"),
-          slat: buf.toString("base64")
+          salt: buf.toString("base64")
         }).then(()=>{
           res.send("가입 성공!")
         }).catch(function(err){
@@ -33,7 +33,22 @@ router.post("/signup", async (req, res) => {
 })
 
 router.post("/signin", async (req, res) => {
+  users
+    .findOne({ where : {u_email: req.body.e_mail}})
+    .then(user => {
+      let token = jwt.sign(
+        {email: user.dataValues.u_email},
+        jwtKey.secret,
+        {expiresIn: '20m'})
 
+      crpyto.pbkdf2(
+        req.body.password, user.dataValues.salt, 10000, 64, 'sha512', (err, key) => {
+          if(key.toString('base64') === user.dataValues.u_password){
+            res.cookie("user", token)
+            res.json({token: token})
+          }
+        })
+    })
 })
 
 module.exports = router;
