@@ -7,7 +7,7 @@ var jwtKey = require("../config/jwt.js");
 var users = require("../../models").users
 
 
-router.post("/signup", async (req, res) => {
+router.post("/signnup", async (req, res) => {
   console.log(req.body)
   const userExist = await users
     .findOne({ where: {u_email: req.body.email}})
@@ -40,7 +40,7 @@ router.post("/signin", async (req, res) => {
       let token = jwt.sign(
         {email: user.dataValues.u_email},
         jwtKey.secret,
-        {expiresIn: '20m'})
+        {expiresIn: '24h'})
 
       crpyto.pbkdf2(
         req.body.password, user.dataValues.salt, 10000, 64, 'sha512', (err, key) => {
@@ -76,6 +76,8 @@ router.post("/update", (req, res) => {
     crpyto.randomBytes(64, (err, buf) => {
       crpyto.pbkdf2(req.body.password, buf.toString('base64'), 10000, 64, 'sha512', (err,key)=>{
         users.update({
+          u_name: req.body.name,
+          u_email: req.body.email,
           u_password: key.toString("base64"),
           salt: buf.toString("base64")
         },
