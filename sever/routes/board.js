@@ -44,16 +44,35 @@ router.post("/add", async (req,res) => {
 })
 
 router.post("/delete", async (req, res) =>{
-  const userKey = await users
-  .findOne({ 
-    attributes: ["u_key"],
-    where: {u_email: req.token.email}})
-  .then(result => result.dataValues.u_key)
-
-  boards.destroy({
+  let boardExist = await boards.findOne({
     where:{
       b_key: req.body.b_key
     }
+  })
+
+  if(req.token && boardExist){
+    boards
+      .destroy({
+        where:{
+          b_key: req.body.b_key
+        }
+      })
+      .then(() => {
+        res.json({
+          success: true,
+          message: 'board가 삭제 되었습니다.🗑'
+        })
+      })
+      .catch((err) => {
+        res.json({
+          success: false,
+          message: '잘못된 요청입니다.😡'
+        })
+      })
+  }
+  res.send(400).json({
+    success: false,
+    message: '잘못된 요청입니다.😡'
   })
 })
 module.exports = router
