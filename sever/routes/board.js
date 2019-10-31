@@ -75,4 +75,33 @@ router.post("/delete", async (req, res) =>{
     message: '잘못된 요청입니다.😡'
   })
 })
+
+router.post("/update", async (req,res) => {
+  let boardExist = await boards.findOne({
+    where:{
+      b_key: req.body.b_key
+    }
+  })
+
+  if(req.token && boardExist){
+    await boards.update({
+      b_name: req.body.b_name
+    },
+    {
+      where : {
+        b_key: req.body.b_key
+      }
+    })
+    .then(() => {
+      res.json({
+        success: true,
+        message: 'board가 수정 되었습니다.📑'
+      })
+    })
+  }
+  res.send(400).json({
+    success: false,
+    message: '잘못된 요청입니다.😡'
+  })
+})
 module.exports = router
