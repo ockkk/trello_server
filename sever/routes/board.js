@@ -3,7 +3,7 @@ var router = express.Router();
 var users = require("../../models").users
 var boards = require("../../models").boards
 
-router.get("/list", async (req, res) => {
+router.get("/", async (req, res) => {
   const userKey = await users
     .findOne({ 
       attributes: ["u_key"],
@@ -18,7 +18,7 @@ router.get("/list", async (req, res) => {
     .catch(err => res.send(err))
 })
 
-router.post("/add", async (req,res) => {
+router.post("/:id", async (req,res) => {
   const userKey = await users
     .findOne({ 
       attributes: ["u_key"],
@@ -43,10 +43,10 @@ router.post("/add", async (req,res) => {
     })
 })
 
-router.post("/delete", async (req, res) =>{
+router.delete("/:id", async (req, res) =>{
   let boardExist = await boards.findOne({
     where:{
-      b_key: req.body.b_key
+      b_key: req.params.id
     }
   })
 
@@ -54,7 +54,7 @@ router.post("/delete", async (req, res) =>{
     boards
       .destroy({
         where:{
-          b_key: req.body.b_key
+          b_key: req.params.id
         }
       })
       .then(() => {
@@ -76,10 +76,10 @@ router.post("/delete", async (req, res) =>{
   })
 })
 
-router.post("/update", async (req,res) => {
+router.put("/:id", async (req,res) => {
   let boardExist = await boards.findOne({
     where:{
-      b_key: req.body.b_key
+      b_key: req.params.id
     }
   })
 
@@ -89,7 +89,7 @@ router.post("/update", async (req,res) => {
     },
     {
       where : {
-        b_key: req.body.b_key
+        b_key: req.params.id
       }
     })
     .then(() => {
