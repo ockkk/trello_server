@@ -4,6 +4,7 @@ var cors = require("cors")
 
 var checkToken = require("../middleware/checkToken")
 var users = require("./routes/user")
+var boards = require("./routes/board")
 
 const app = express();
 const models = require("../models/index");
@@ -21,6 +22,8 @@ app.use(bodyparser.urlencoded({extended: true}));
 app.use(checkToken)
 
 app.use("/users", users)
+app.use("/boards", boards)
+
 app.listen(8080, () => {
   console.log("trello server start!!!!")
 })
