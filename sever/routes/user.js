@@ -7,8 +7,7 @@ var jwtKey = require("../config/jwt.js");
 var users = require("../../models").users
 
 
-router.post("/signnup", async (req, res) => {
-  console.log(req.body)
+router.post("/", async (req, res) => {
   const userExist = await users
     .findOne({ where: {u_email: req.body.email}})
     .then(result => result)
@@ -22,14 +21,20 @@ router.post("/signnup", async (req, res) => {
           u_password: key.toString("base64"),
           salt: buf.toString("base64")
         }).then(()=>{
-          res.send("가입 성공!")
+          res.json({
+            success: true,
+            message: "회원가입이 되었습니다👌" 
+          })
         }).catch(function(err){
           res.send(err);
         })
       })
     })
   } else {
-    res.send("이미 존재하는 사용자입니다!!")
+    res.json({
+      success: false,
+      message: "이미 존재하는 사용자 입니다.🙅🏻‍♂️" 
+    })
   }
 })
 
@@ -53,6 +58,7 @@ router.post("/signin", async (req, res) => {
             })
           } else {
             res.send(403).json({
+              u_name: user.dataValues.u_name,
               success: false,
               message: '회원정보가 일치 하지 않습니다.😰'
             });
@@ -71,7 +77,7 @@ router.post("/signout", (req, res) => {
 
 })
 
-router.post("/update", (req, res) => {
+router.put("/:id", (req, res) => {
   if(req.token){
     crpyto.randomBytes(64, (err, buf) => {
       crpyto.pbkdf2(req.body.password, buf.toString('base64'), 10000, 64, 'sha512', (err,key)=>{
@@ -92,7 +98,7 @@ router.post("/update", (req, res) => {
   }
 })
 
-router.post('/delete', (req, res) => {
+router.delete('/:id', (req, res) => {
   if(req.token){
     users.destroy({
       where:{

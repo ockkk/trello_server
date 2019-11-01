@@ -77,6 +77,7 @@ router.delete("/:id", async (req, res) =>{
 })
 
 router.put("/:id", async (req,res) => {
+  console.log(req.params)
   let boardExist = await boards.findOne({
     where:{
       b_key: req.params.id
