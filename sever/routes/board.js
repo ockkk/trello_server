@@ -2,7 +2,8 @@ var express = require("express");
 var router = express.Router();
 var users = require("../../models").users
 var boards = require("../../models").boards
-
+var containers = require("../../models").containers
+var cards = require("../../models").cards
 router.get("/", async (req, res) => {
   const userKey = await users
     .findOne({ 
@@ -16,6 +17,32 @@ router.get("/", async (req, res) => {
     })
     .then(result => res.json(result))
     .catch(err => res.send(err))
+})
+
+router.get("/:id", async (req, res) => {
+  await boards
+    .findAll({
+      include:[{
+        model: containers,
+        attributes: ["ct_key", "ct_name"],
+      }],
+      where: {b_key: req.params.id}
+    })
+    .then(val => res.json(val))
+
+    // ctList.map(val => console.log(val))
+      // console.log(boardKey.dataValues.ct_Key))
+    // await containers.findAll({
+    //   include: [
+    //     {
+    //       model: cards,
+    //       attributes: ['cd_key', 'cd_name']
+    //     }
+    //   ],
+    //   where: 8
+    // })
+    // .then(val => res.send(val))
+
 })
 
 router.post("/:id", async (req,res) => {
