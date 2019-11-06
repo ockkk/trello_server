@@ -1,17 +1,22 @@
 var express = require("express");
 var router = express.Router();
-var contaners = require("../../models").containers
+var containers = require("../../models").containers
+var cards = require("../../models").cards
 
 router.get("/", async (req, res) => {
-  await contaners
+  await containers
     .findAll()
     .then(result => res.json(result))
 })
 
 router.get("/:id", async (req, res) => {
-  await contaners
+  await containers
     .findAll({
-      where: {b_key: req.params.id}
+      include:[{
+        model: cards,
+        attributes: ["cd_key", "cd_name"]
+      }],
+      where: {ct_key: req.params.id}
     })
     .then(result => res.json(result))
     .catch(err => res.send(err))
@@ -19,7 +24,7 @@ router.get("/:id", async (req, res) => {
 
 router.post("/:id", async (req,res) => {
   if(req.token){
-    await contaners
+    await containers
       .create({
         ct_name: req.body.ct_name,
         b_key: req.params.id
@@ -37,21 +42,17 @@ router.post("/:id", async (req,res) => {
         })
       })
   }
-  res.send(400).json({
-    success: false,
-    message: '잘못된 요청입니다.😡'
-  })
 })
 
 router.delete("/:id", async (req, res) =>{
-  let ctExist = await contaners.findOne({
+  let ctExist = await containers.findOne({
     where:{
       ct_key: req.params.id
     }
   })
 
   if(req.token && ctExist){
-   await contaners
+   await containers
       .destroy({
         where:{
           ct_key: req.params.id
@@ -70,21 +71,17 @@ router.delete("/:id", async (req, res) =>{
         })
       })
   }
-  res.send(400).json({
-    success: false,
-    message: '잘못된 요청입니다.😡'
-  })
 })
 
 router.put("/:id", async (req,res) => {
-  let boardExist = await contaners.findOne({
+  let boardExist = await containers.findOne({
     where:{
       ct_key: req.params.id
     }
   })
 
   if(req.token && boardExist){
-    await contaners.update({
+    await containers.update({
       ct_name: req.body.ct_name
     },
     {
@@ -99,10 +96,6 @@ router.put("/:id", async (req,res) => {
       })
     })
   }
-  res.send(400).json({
-    success: false,
-    message: '잘못된 요청입니다.😡'
-  })
 })
 
 module.exports = router
