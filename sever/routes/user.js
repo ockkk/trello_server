@@ -57,7 +57,7 @@ router.post("/signin", async (req, res) => {
               token: token
             })
           } else {
-            res.send(403).json({
+            res.json({
               u_name: user.dataValues.u_name,
               success: false,
               message: '회원정보가 일치 하지 않습니다.😰'

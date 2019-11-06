@@ -4,7 +4,7 @@ var router = express.Router();
 var contaners = require("../../models").contaners
 var cards = require("../../models").cards
 
-router.get("/:id", async (req,res) => {
+router.get("/", async (req,res) => {
   cards
     .findAll()
     .then(result => res.json(result))
@@ -20,10 +20,10 @@ router.get("/:id", async (req, res) => {
 })
 
 router.post("/:id", async (req,res) => {
-  contaners
+  await cards
     .create({
       cd_name: req.body.cd_name,
-      ct_key: req.params.ct_key
+      ct_key: req.body.ct_key
     })
     .then(val => res.json({
       cd_key: val.dataValues.cd_key,
@@ -65,10 +65,6 @@ router.delete("/:id", async (req, res) =>{
         })
       })
   }
-  res.send(400).json({
-    success: false,
-    message: '잘못된 요청입니다.😡'
-  })
 })
 
 router.put("/:id", async (req,res) => {
@@ -94,10 +90,6 @@ router.put("/:id", async (req,res) => {
       })
     })
   }
-  res.send(400).json({
-    success: false,
-    message: '잘못된 요청입니다.😡'
-  })
 })
 
 module.exports = router
