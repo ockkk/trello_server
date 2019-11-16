@@ -1,11 +1,12 @@
 {
   "development": {
-    "username": "root",
-    "password": "password",
-    "database": "trello",
-    "host": "127.0.0.1",
+    "username": "ockkk",
+    "password": "",
+    "database": "trello_clone",
+    "host": "trello-clone-deploy.czioh4kciapv.ap-northeast-2.rds.amazonaws.com",
+    "port": "20000",
     "dialect": "mysql",
-    "operatorsAliases": false
+    "logging": false
   },
   "test": {
     "username": "root",
