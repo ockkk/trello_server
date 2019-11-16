@@ -19,7 +19,7 @@ router.get("/:id", async (req, res) => {
     .catch(err => res.send(err))
 })
 
-router.post("/:id", async (req,res) => {
+router.post("/", async (req,res) => {
   await cards
     .create({
       cd_name: req.body.cd_name,
@@ -39,14 +39,14 @@ router.post("/:id", async (req,res) => {
 })
 
 router.delete("/:id", async (req, res) =>{
-  let cdExits = await contaners.findOne({
+  let cdExits = await cards.findOne({
     where:{
       cd_key: req.params.id
     }
   })
 
   if(req.token && cdExits){
-    contaners
+    cards
       .destroy({
         where:{
           cd_key: req.params.id
@@ -68,15 +68,15 @@ router.delete("/:id", async (req, res) =>{
 })
 
 router.put("/:id", async (req,res) => {
-  let cdExist = await contaners.findOne({
+  let cdExist = await cards.findOne({
     where:{
       cd_key: req.params.id
     }
   })
 
   if(req.token && cdExist){
-    await contaners.update({
-      cd_name: req.body.b_name
+    cards.update({
+      cd_name: req.body.cd_name
     },
     {
       where : {
@@ -89,7 +89,37 @@ router.put("/:id", async (req,res) => {
         message: 'card가 수정 되었습니다.🃏'
       })
     })
+    .catch((err) => {
+      res.json({
+        success: false,
+        message: '잘못된 요청입니다.😡'
+      })
+    })
   }
+})
+
+router.put("/:id/move", async (req, res) => {
+  console.log(req.body, req.params)
+  cards.update({
+    ct_key: req.body.ct_key
+  },
+  {
+    where : {
+      cd_key: req.params.id
+    }
+  })
+  .then(()=>{
+    res.json({
+      success: true,
+      message: 'card가 이동 되었습니다.'
+    })
+  })
+  .catch((err) => {
+    res.json({
+      success: false,
+      message: '잘못된 요청입니다.😡'
+    })
+  })
 })
 
 module.exports = router
