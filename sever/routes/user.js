@@ -7,7 +7,6 @@ var jwtKey = require("../config/jwt.js");
 var users = require("../../models").users
 
 router.get("/token", async (req,res) => {
-  console.log(req.token)
   await users
     .findOne({
       where: {u_email: req.token.email},
@@ -115,7 +114,6 @@ router.post("/checkUser", async (req, res) => {
     })
 })
 router.put("/", async (req, res) => {
-  console.log(req.body.name)
   if(req.token){
     if(req.body.password){
       crpyto.randomBytes(64, (err, buf) => {

@@ -99,7 +99,6 @@ router.put("/:id", async (req,res) => {
 })
 
 router.put("/:id/move", async (req, res) => {
-  console.log(req.body, req.params)
   cards.update({
     ct_key: req.body.ct_key
   },
