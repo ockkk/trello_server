@@ -5,29 +5,34 @@ var cards = require("../../models").cards
 
 router.get("/", async (req, res) => {
   await containers
-    .findAll()
+    .findAll({
+      attributes: ["ct_key", "ct_name"],
+      where: {b_key:req.body.b_key}
+    })
     .then(result => res.json(result))
 })
 
 router.get("/:id", async (req, res) => {
-  await containers
-    .findAll({
-      include:[{
-        model: cards,
-        attributes: ["cd_key", "cd_name"]
-      }],
-      where: {ct_key: req.params.id}
-    })
-    .then(result => res.json(result))
-    .catch(err => res.send(err))
+  if(req.token){
+    await containers
+      .findAll({
+        include:[{
+          model: cards,
+          attributes: ["cd_key", "cd_name"]
+        }],
+        where: {ct_key: req.params.id}
+      })
+      .then(result => res.json(result))
+      .catch(err => res.send(err))
+  }
 })
 
-router.post("/:id", async (req,res) => {
+router.post("/", async (req,res) => {
   if(req.token){
     await containers
       .create({
         ct_name: req.body.ct_name,
-        b_key: req.params.id
+        b_key: req.body.b_key
       })
       .then(val =>
         res.json({
@@ -95,6 +100,7 @@ router.put("/:id", async (req,res) => {
         message: 'contaner가 수정 되었습니다.📦'
       })
     })
+    .catch(err => console.log(err))
   }
 })
 
