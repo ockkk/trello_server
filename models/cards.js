@@ -2,13 +2,13 @@
 
 module.exports = (sequelize, DataTypes) => {
   const cards = sequelize.define('cards', {
-    b_key: {
+    cd_key: {
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true,
       autoIncrement: true,
     },
-    b_name: {
+    cd_name: {
       type: DataTypes.STRING(30),
       allowNull: false,
     },
