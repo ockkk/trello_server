@@ -4,6 +4,7 @@ var users = require("../../models").users
 var boards = require("../../models").boards
 var containers = require("../../models").containers
 var cards = require("../../models").cards
+
 router.get("/", async (req, res) => {
   const userKey = await users
     .findOne({ 
@@ -20,32 +21,18 @@ router.get("/", async (req, res) => {
 })
 
 router.get("/:id", async (req, res) => {
-  await boards
+  await containers
     .findAll({
       include:[{
-        model: containers,
-        attributes: ["ct_key", "ct_name"],
+        model: cards,
+        attributes: ["cd_key", "cd_name"],
       }],
       where: {b_key: req.params.id}
     })
     .then(val => res.json(val))
-
-    // ctList.map(val => console.log(val))
-      // console.log(boardKey.dataValues.ct_Key))
-    // await containers.findAll({
-    //   include: [
-    //     {
-    //       model: cards,
-    //       attributes: ['cd_key', 'cd_name']
-    //     }
-    //   ],
-    //   where: 8
-    // })
-    // .then(val => res.send(val))
-
 })
 
-router.post("/:id", async (req,res) => {
+router.post("/", async (req,res) => {
   const userKey = await users
     .findOne({ 
       attributes: ["u_key"],
@@ -104,7 +91,7 @@ router.delete("/:id", async (req, res) =>{
 })
 
 router.put("/:id", async (req,res) => {
-  console.log(req.params)
+  console.log(req.body, req.params)
   let boardExist = await boards.findOne({
     where:{
       b_key: req.params.id
